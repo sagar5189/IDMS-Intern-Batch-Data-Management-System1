@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,11 +16,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatStepperModule } from '@angular/material/stepper';
-
 import { InternService } from '../../services/intern.service';
 import { BatchService } from '../../services/batch.service';
 import { BatchSummary } from '../../models/models';
-
 @Component({
   selector: 'app-intern-form',
   standalone: true,
@@ -35,7 +32,6 @@ import { BatchSummary } from '../../models/models';
   ],
   template: `
 <div class="page-container anim-fade-in">
-
   <!-- Page Header -->
   <div class="page-header">
     <div>
@@ -47,22 +43,17 @@ import { BatchSummary } from '../../models/models';
       <span class="btn-label">Back to List</span>
     </a>
   </div>
-
   <div class="form-layout" [class.mobile]="isMobile">
-
     <!-- ── Form Card ─────────────────────────────────────────── -->
     <mat-card class="form-card anim-fade-in-up">
       <mat-card-content>
         <form [formGroup]="form" (ngSubmit)="submit()">
-
           <!-- Section: Personal Information -->
           <div class="section-header">
             <div class="section-icon"><mat-icon>person_outline</mat-icon></div>
             <h3 class="section-title">Personal Information</h3>
           </div>
-
           <div class="form-grid" [class.single-col]="isMobile">
-
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Full Name</mat-label>
               <input matInput formControlName="name" placeholder="e.g. Priya Sharma" autocomplete="name">
@@ -70,7 +61,6 @@ import { BatchSummary } from '../../models/models';
               <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
               <mat-error *ngIf="form.get('name')?.hasError('minlength')">Minimum 2 characters</mat-error>
             </mat-form-field>
-
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Email Address</mat-label>
               <input matInput type="email" formControlName="email" placeholder="priya@example.com" autocomplete="email">
@@ -78,7 +68,6 @@ import { BatchSummary } from '../../models/models';
               <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
               <mat-error *ngIf="form.get('email')?.hasError('email')">Enter a valid email address</mat-error>
             </mat-form-field>
-
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Mobile Number</mat-label>
               <input matInput type="tel" formControlName="mobileNumber" placeholder="9876543210" autocomplete="tel">
@@ -86,7 +75,6 @@ import { BatchSummary } from '../../models/models';
               <mat-error *ngIf="form.get('mobileNumber')?.hasError('required')">Mobile is required</mat-error>
               <mat-error *ngIf="form.get('mobileNumber')?.hasError('pattern')">Valid 10-digit Indian mobile (starts 6–9)</mat-error>
             </mat-form-field>
-
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Date of Joining</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="dateOfJoining">
@@ -94,52 +82,7 @@ import { BatchSummary } from '../../models/models';
               <mat-datepicker #picker></mat-datepicker>
               <mat-error *ngIf="form.get('dateOfJoining')?.hasError('required')">Date of joining is required</mat-error>
             </mat-form-field>
-
-          </div>
-
-          <!-- Section: Program Details -->
-          <div class="section-header" style="margin-top:1.75rem">
-            <div class="section-icon"><mat-icon>work_outline</mat-icon></div>
-            <h3 class="section-title">Program Details</h3>
-          </div>
-
-          <div class="form-grid" [class.single-col]="isMobile">
-
-            <!-- ID Card Type -->
-            <div class="full-width">
-              <label class="field-label">ID Card Type *</label>
-              <mat-radio-group formControlName="idCardType" class="card-type-group" [class.stacked]="isMobile">
-
-                <div class="card-option" [class.selected]="form.value.idCardType === 'FREE'"
-                     (click)="form.get('idCardType')?.setValue('FREE')" role="button" tabindex="0">
-                  <mat-radio-button value="FREE">
-                    <div class="card-option-content">
-                      <div class="card-type-icon free"><mat-icon>credit_card</mat-icon></div>
-                      <div>
-                        <div class="card-type-name">Free</div>
-                        <div class="card-type-prefix">TDA&#123;YYYYMMDD&#125;-001</div>
-                      </div>
-                    </div>
-                  </mat-radio-button>
-                </div>
-
-                <div class="card-option" [class.selected]="form.value.idCardType === 'PREMIUM'"
-                     (click)="form.get('idCardType')?.setValue('PREMIUM')" role="button" tabindex="0">
-                  <mat-radio-button value="PREMIUM">
-                    <div class="card-option-content">
-                      <div class="card-type-icon premium"><mat-icon>workspace_premium</mat-icon></div>
-                      <div>
-                        <div class="card-type-name">Premium</div>
-                        <div class="card-type-prefix">EMP&#123;YYYYMMDD&#125;-001</div>
-                      </div>
-                    </div>
-                  </mat-radio-button>
-                </div>
-
-              </mat-radio-group>
-            </div>
-
-            <!-- Batch -->
+            <!-- ONLY CHANGE: Assign to Batch moved here from Program Details -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Assign to Batch</mat-label>
               <mat-select formControlName="batchId">
@@ -152,7 +95,43 @@ import { BatchSummary } from '../../models/models';
               <mat-icon matSuffix>groups</mat-icon>
               <mat-error *ngIf="form.get('batchId')?.hasError('required')">Please assign a batch</mat-error>
             </mat-form-field>
-
+          </div>
+          <!-- Section: Program Details -->
+          <div class="section-header" style="margin-top:1.75rem">
+            <div class="section-icon"><mat-icon>work_outline</mat-icon></div>
+            <h3 class="section-title">Program Details</h3>
+          </div>
+          <div class="form-grid" [class.single-col]="isMobile">
+            <!-- ID Card Type -->
+            <div class="full-width">
+              <label class="field-label">ID Card Type *</label>
+              <mat-radio-group formControlName="idCardType" class="card-type-group" [class.stacked]="isMobile">
+                <div class="card-option" [class.selected]="form.value.idCardType === 'FREE'"
+                     (click)="form.get('idCardType')?.setValue('FREE')" role="button" tabindex="0">
+                  <mat-radio-button value="FREE">
+                    <div class="card-option-content">
+                      <div class="card-type-icon free"><mat-icon>credit_card</mat-icon></div>
+                      <div>
+                        <div class="card-type-name">Free</div>
+                        <div class="card-type-prefix">TDA&#123;YYYYMMDD&#125;-001</div>
+                      </div>
+                    </div>
+                  </mat-radio-button>
+                </div>
+                <div class="card-option" [class.selected]="form.value.idCardType === 'PREMIUM'"
+                     (click)="form.get('idCardType')?.setValue('PREMIUM')" role="button" tabindex="0">
+                  <mat-radio-button value="PREMIUM">
+                    <div class="card-option-content">
+                      <div class="card-type-icon premium"><mat-icon>workspace_premium</mat-icon></div>
+                      <div>
+                        <div class="card-type-name">Premium</div>
+                        <div class="card-type-prefix">EMP&#123;YYYYMMDD&#125;-001</div>
+                      </div>
+                    </div>
+                  </mat-radio-button>
+                </div>
+              </mat-radio-group>
+            </div>
             <!-- Edit-only: performance fields -->
             <ng-container *ngIf="isEdit">
               <mat-form-field appearance="outline" class="full-width">
@@ -174,9 +153,7 @@ import { BatchSummary } from '../../models/models';
                 </mat-select>
               </mat-form-field>
             </ng-container>
-
           </div>
-
           <!-- ID Format Preview -->
           <div class="id-preview" *ngIf="idFormatPreview">
             <div class="id-preview-left">
@@ -185,7 +162,6 @@ import { BatchSummary } from '../../models/models';
             </div>
             <span class="id-preview-hint">Sequence assigned on save</span>
           </div>
-
           <!-- Actions -->
           <mat-divider style="margin:1.5rem 0"></mat-divider>
           <div class="form-actions" [class.stacked]="isMobile">
@@ -195,11 +171,9 @@ import { BatchSummary } from '../../models/models';
               {{ submitting ? 'Saving…' : (isEdit ? 'Update Intern' : 'Register Intern') }}
             </button>
           </div>
-
         </form>
       </mat-card-content>
     </mat-card>
-
     <!-- ── ID Card Preview (hidden on mobile) ──────────────────── -->
     <div class="preview-panel anim-fade-in-up" *ngIf="!isMobile">
       <p class="preview-title">ID Card Preview</p>
@@ -236,14 +210,12 @@ import { BatchSummary } from '../../models/models';
           <div *ngFor="let b of barcodeBars" class="bar" [style.height.px]="b"></div>
         </div>
       </div>
-
       <!-- Mini hint card below ID card -->
       <div class="hint-card" *ngIf="idFormatPreview">
         <mat-icon style="font-size:16px;width:16px;height:16px;color:#6366f1">info_outline</mat-icon>
         <span>ID will be finalized on save with a unique sequence number.</span>
       </div>
     </div>
-
   </div>
 </div>
   `,
@@ -253,30 +225,24 @@ import { BatchSummary } from '../../models/models';
     .page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
     .page-title { font-size:1.625rem; font-weight:700; margin:0 0 .2rem; letter-spacing:-.02em; }
     .page-subtitle { color:#94a3b8; margin:0; font-size:.875rem; }
-
     /* ── Layout ─────────────────────────────────────────────────────────── */
     .form-layout { display:grid; grid-template-columns:1fr 320px; gap:1.75rem; align-items:start; }
     .form-layout.mobile { grid-template-columns:1fr; }
-
     /* ── Form Card ──────────────────────────────────────────────────────── */
     .form-card { border-radius:16px !important; }
-
     /* ── Section Header ─────────────────────────────────────────────────── */
     .section-header { display:flex; align-items:center; gap:.625rem; margin-bottom:1.25rem; }
     .section-icon { width:32px; height:32px; border-radius:8px; background:rgba(99,102,241,.12); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .section-icon mat-icon { font-size:18px; width:18px; height:18px; color:#6366f1; }
     .section-title { font-size:.75rem; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:#94a3b8; margin:0; }
-
     /* ── Form Grid ──────────────────────────────────────────────────────── */
     .form-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:1rem; }
     .form-grid.single-col { grid-template-columns:1fr; }
     .full-width { width:100%; }
     .field-label { font-size:.8rem; font-weight:500; color:#94a3b8; display:block; margin-bottom:.625rem; }
-
     /* ── Card Type Options ──────────────────────────────────────────────── */
     .card-type-group { display:flex; gap:.75rem; }
     .card-type-group.stacked { flex-direction:column; }
-
     .card-option {
       flex:1; cursor:pointer;
       border:2px solid rgba(148,163,184,.15) !important;
@@ -287,7 +253,6 @@ import { BatchSummary } from '../../models/models';
     }
     .card-option:hover { border-color:rgba(99,102,241,.4) !important; background:rgba(99,102,241,.06) !important; }
     .card-option.selected { border-color:#6366f1 !important; background:rgba(99,102,241,.1) !important; }
-
     .card-option-content { display:flex; align-items:center; gap:.875rem; }
     .card-type-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .card-type-icon.free    { background:rgba(6,182,212,.12); color:#06b6d4; }
@@ -295,10 +260,8 @@ import { BatchSummary } from '../../models/models';
     .card-type-icon mat-icon { font-size:18px; width:18px; height:18px; }
     .card-type-name { font-weight:600; font-size:.875rem; color:#e2e8f0; }
     .card-type-prefix { font-size:.68rem; color:#64748b; font-family:monospace; margin-top:1px; }
-
     /* ── Batch dates hint ───────────────────────────────────────────────── */
     .batch-dates { font-size:.78rem; color:#64748b; }
-
     /* ── ID Preview ─────────────────────────────────────────────────────── */
     .id-preview {
       display:flex; align-items:center; justify-content:space-between;
@@ -311,18 +274,15 @@ import { BatchSummary } from '../../models/models';
     .id-preview-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.09em; color:#64748b; }
     .id-preview-value { font-family:monospace; font-size:1rem; font-weight:700; color:#818cf8; }
     .id-preview-hint { font-size:.72rem; color:#64748b; font-style:italic; }
-
     /* ── Actions ────────────────────────────────────────────────────────── */
     .form-actions { display:flex; justify-content:flex-end; gap:.75rem; align-items:center; }
     .form-actions.stacked { flex-direction:column-reverse; }
     .form-actions.stacked .cancel-btn,
     .form-actions.stacked .submit-btn { width:100%; justify-content:center; }
     .btn-label { margin-left:4px; }
-
     /* ── ID Card Preview ────────────────────────────────────────────────── */
     .preview-panel { position:sticky; top:80px; }
     .preview-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.09em; color:#64748b; margin:0 0 .875rem; font-weight:600; }
-
     .id-card {
       background:linear-gradient(145deg,#0f172a,#1e293b);
       border:1px solid rgba(56,189,248,.2);
@@ -330,13 +290,11 @@ import { BatchSummary } from '../../models/models';
       box-shadow:0 20px 60px rgba(0,0,0,.4);
     }
     .id-card.premium { background:linear-gradient(145deg,#1a0a2e,#2d1b4e); border-color:rgba(129,140,248,.3); }
-
     .id-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
     .id-card-brand { font-size:.75rem; font-weight:700; color:#38bdf8; letter-spacing:.09em; text-transform:uppercase; }
     .id-card.premium .id-card-brand { color:#818cf8; }
     .id-card-type { font-size:.62rem; padding:.15rem .5rem; border-radius:999px; background:rgba(56,189,248,.15); color:#38bdf8; font-weight:600; }
     .id-card.premium .id-card-type { background:rgba(129,140,248,.15); color:#818cf8; }
-
     .id-card-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#6366f1,#a855f7); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.3rem; font-weight:700; margin:0 auto .625rem; }
     .id-card-name { text-align:center; font-weight:700; color:#fff; margin-bottom:.15rem; font-size:.95rem; }
     .id-card-email { text-align:center; font-size:.7rem; color:#94a3b8; margin-bottom:.875rem; }
@@ -349,10 +307,8 @@ import { BatchSummary } from '../../models/models';
     .id-card-barcode { display:flex; gap:2px; align-items:flex-end; margin-top:1.125rem; height:24px; }
     .id-card-barcode .bar { width:2px; background:rgba(56,189,248,.35); border-radius:1px; }
     .id-card.premium .id-card-barcode .bar { background:rgba(129,140,248,.35); }
-
     /* ── Hint card below ID card preview ────────────────────────────────── */
     .hint-card { display:flex; align-items:flex-start; gap:.5rem; margin-top:.875rem; padding:.75rem 1rem; background:rgba(99,102,241,.07); border:1px solid rgba(99,102,241,.2); border-radius:10px; font-size:.75rem; color:#94a3b8; line-height:1.5; }
-
     /* ── Responsive overrides ───────────────────────────────────────────── */
     @media (max-width: 1024px) {
       .page-container { padding: 1.5rem; }
@@ -367,7 +323,6 @@ import { BatchSummary } from '../../models/models';
       .page-title { font-size:1.25rem; }
       .btn-label { display:none; }
     }
-
     /* ── Animations ─────────────────────────────────────────────────────── */
     .anim-fade-in { animation:fadeIn .4s ease both; }
     .anim-fade-in-up { animation:fadeInUp .45s ease both; }
@@ -383,14 +338,12 @@ export class InternFormComponent implements OnInit {
   private router        = inject(Router);
   private route         = inject(ActivatedRoute);
   private bp            = inject(BreakpointObserver);
-
   isEdit    = false;
   editId?:   number;
   submitting = false;
   isMobile   = false;
   batches:   BatchSummary[] = [];
   barcodeBars = Array.from({ length: 30 }, () => Math.random() * 16 + 6);
-
   form = this.fb.group({
     name:               ['', [Validators.required, Validators.minLength(2)]],
     email:              ['', [Validators.required, Validators.email]],
@@ -402,7 +355,6 @@ export class InternFormComponent implements OnInit {
     performanceRemarks: [''],
     status:             ['ACTIVE']
   });
-
   get idFormatPreview(): string {
     const type = this.form.value.idCardType;
     const date = this.form.value.dateOfJoining;
@@ -412,20 +364,15 @@ export class InternFormComponent implements OnInit {
     const datePart = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
     return `${prefix}${datePart}-###`;
   }
-
   get selectedBatchName(): string {
     const id = this.form.value.batchId;
     return this.batches.find(b => b.id === +id!)?.batchName ?? '';
   }
-
   ngOnInit(): void {
-    // ── Responsive: collapse layout on mobile / tablet ─────────────────────
     this.bp.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
       this.isMobile = result.matches;
     });
-
     this.batchService.getSummaries().subscribe(b => this.batches = b);
-
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.isEdit = true;
@@ -442,18 +389,15 @@ export class InternFormComponent implements OnInit {
           performanceRemarks: intern.performanceRemarks ?? '',
           status:             intern.status
         });
-        // Intern ID is immutable after creation
         this.form.get('idCardType')?.disable();
         this.form.get('dateOfJoining')?.disable();
       });
     }
   }
-
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.submitting = true;
     const v = this.form.getRawValue();
-
     const dateVal = v.dateOfJoining;
     let dateStr = '';
     if (dateVal instanceof Date) {
@@ -461,7 +405,6 @@ export class InternFormComponent implements OnInit {
     } else {
       dateStr = dateVal as unknown as string;
     }
-
     if (this.isEdit) {
       this.internService.update(this.editId!, {
         name: v.name!, email: v.email!, mobileNumber: v.mobileNumber!,
