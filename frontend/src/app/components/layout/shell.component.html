@@ -1,0 +1,94 @@
+<!-- shell.component.html -->
+<div class="shell" [class.sidebar-collapsed]="sidebarCollapsed">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────── -->
+  <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar-inner">
+
+      <!-- Brand -->
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2L25.26 8.5V21.5L14 28L2.74 21.5V8.5L14 2Z"
+                  fill="url(#brandGrad)" opacity="0.9"/>
+            <path d="M14 7L20.5 10.75V18.25L14 22L7.5 18.25V10.75L14 7Z"
+                  fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+            <defs>
+              <linearGradient id="brandGrad" x1="2.74" y1="2" x2="25.26" y2="28">
+                <stop offset="0%" stop-color="#38bdf8"/>
+                <stop offset="100%" stop-color="#818cf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text" *ngIf="!sidebarCollapsed">
+          <span class="brand-name">InternHub</span>
+          <span class="brand-tagline">Management System</span>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="nav">
+        <a *ngFor="let item of navItems" [routerLink]="item.route"
+           routerLinkActive="active" class="nav-item"
+           [matTooltip]="sidebarCollapsed ? item.label : ''" matTooltipPosition="right">
+          <span class="nav-icon" [innerHTML]="item.icon"></span>
+          <span class="nav-label" *ngIf="!sidebarCollapsed">{{ item.label }}</span>
+          <span class="nav-badge" *ngIf="item.badge && !sidebarCollapsed">{{ item.badge }}</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <!-- User card -->
+        <div class="user-card" *ngIf="!sidebarCollapsed">
+          <div class="user-avatar">{{ userInitials() }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ currentUser()?.fullName }}</span>
+            <span class="user-role">{{ primaryRole() }}</span>
+          </div>
+        </div>
+        <button class="btn-logout" (click)="logout()" title="Logout"
+                [matTooltip]="sidebarCollapsed ? 'Logout' : ''" matTooltipPosition="right"
+                aria-label="Logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+          <span *ngIf="!sidebarCollapsed">Logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ────────────────────────────────────────────────── -->
+  <div class="main-wrap">
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="collapse-btn" (click)="toggleSidebar()" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div class="topbar-center">
+        <div class="search-bar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text" placeholder="Search interns, batches…" [(ngModel)]="globalSearch" (keyup.enter)="doSearch()">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" routerLink="/notifications" matTooltip="Notifications" title="Notifications" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+{
+  "folders": [
+    { "name": "🔵 Backend (Spring Boot)", "path": "backend" },
+    { "name": "🟠 Frontend (Angular)",    "path": "frontend" },
+    { "name": "📋 Root",                  "path": "." }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.rulers": [120],
+    "editor.bracketPairColorization.enabled": true,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/target": true,
+      "**/.git": true
+    },
+    "[java]": {
+      "editor.tabSize": 4,
+      "editor.defaultFormatter": "redhat.java"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "java.compile.nullAnalysis.mode": "automatic",
+    "spring-boot.ls.problem.application-properties.UNKNOWN_PROPERTY_KEY": "WARNING"
+  },
+  "extensions": {
+    "recommendations": [
+      "vscjava.vscode-java-pack",
+      "vmware.vscode-spring-boot",
+      "vscjava.vscode-spring-initializr",
+      "angular.ng-template",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "pkief.material-icon-theme",
+      "github.github-vscode-theme"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "▶ Spring Boot App",
+        "request": "launch",
+        "mainClass": "com.internmgmt.InternManagementApplication",
+        "projectName": "intern-management"
+      },
+      {
+        "type": "chrome",
+        "name": "▶ Angular (Chrome)",
+        "request": "launch",
+        "url": "http://localhost:4200",
+        "webRoot": "${workspaceFolder:🟠 Frontend (Angular)}/src"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "▶▶ Full Stack",
+        "configurations": ["▶ Spring Boot App", "▶ Angular (Chrome)"]
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "ng serve",
+        "type": "shell",
+        "command": "ng serve",
+        "options": { "cwd": "${workspaceFolder:🟠 Frontend (Angular)}" },
+        "group": { "kind": "build", "isDefault": true },
+        "presentation": { "panel": "shared", "reveal": "always" }
+      },
+      {
+        "label": "mvn spring-boot:run",
+        "type": "shell",
+        "command": "mvn spring-boot:run",
+        "options": { "cwd": "${workspaceFolder:🔵 Backend (Spring Boot)}" },
+        "group": "build",
+        "presentation": { "panel": "shared", "reveal": "always" }
+      }
+    ]
+  }
+}
