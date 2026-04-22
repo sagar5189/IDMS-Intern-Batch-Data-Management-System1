@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8080/api/v1'
+  production: true,
+  apiUrl: 'https://idms-intern-batch-data-management-system1-production.up.railway.app/api/v1'
 };
